@@ -80,9 +80,8 @@ export function getBubbleSort(array){
   const animation=[];
   if(array.length===1)return array;
   bubblesorthelper(array,animation);
-  return animation;}
-
-
+  return animation;
+}
 
 function bubblesorthelper(mainarray,animation)
 {
@@ -106,5 +105,92 @@ function bubblesorthelper(mainarray,animation)
               animation.push([j+1,mainarray[j+1]]);
           }
       }
+  }
+}
+
+export function getQuickSortAnimations(array) {
+  const animations = [];
+  if (array.length <= 1) return array;
+  QuickSortHelper(array, 0, array.length - 1,animations);
+  return animations;
+}
+
+function QuickSortHelper(
+  mainArray,
+  startIdx,
+  endIdx,
+  animations
+) {
+  if (startIdx < endIdx) {
+  const pivot = partition(mainArray,startIdx,endIdx,animations);
+  QuickSortHelper(mainArray, startIdx, pivot -1 , animations);
+  QuickSortHelper(mainArray, pivot + 1, endIdx, animations);
+  //doMerge(mainArray, startIdx, middleIdx, endIdx, auxiliaryArray, animations);
+  }
+}
+
+function partition(
+  mainArray,
+  startIdx,
+  endIdx,
+  animations
+)  {
+   const pivot = mainArray[endIdx];
+   let i = startIdx -1;
+   for(let j=startIdx; j<endIdx ; j++)
+   {
+    animations.push([j,endIdx]);
+    animations.push([j,endIdx]); 
+    if(mainArray[j]< pivot){
+       i++;
+       animations.push([j,mainArray[i]]);
+       animations.push([i,mainArray[j]]);
+       const crap = mainArray[i];
+       mainArray[i] =mainArray[j];
+       mainArray[j] = crap ;
+     }
+     else{
+       i++;
+       animations.push([j,mainArray[j]]);
+       animations.push([i,mainArray[i]]);
+       i--;
+     }
+   }
+   animations.push([i+1,endIdx]);
+   animations.push([i+1,endIdx]);
+   animations.push([endIdx,mainArray[i+1]]);
+   animations.push([i+1,mainArray[endIdx]]);
+   const crap = mainArray[i+1];
+   mainArray[i+1] =mainArray[endIdx];
+   mainArray[endIdx] = crap ;
+   return i+1;
+}
+
+export function getInsertionSortAnimations(array){
+
+  const animation=[];
+  if(array.length===1)return array;
+  InsertionSorthelper(array,animation);
+  return animation;
+}
+
+function InsertionSorthelper(mainarray,animation)
+{
+  for(let i=1;i<mainarray.length;i++)
+  {
+    const key = mainarray[i]; 
+    let j=i-1; 
+    while (j>=0 && mainarray[j]>key)
+      {
+          animation.push([j,i]);
+          animation.push([j,i]);
+          animation.push([j+1,mainarray[j]]);
+          mainarray[j+1]=mainarray[j];
+          j--;
+      }
+      animation.push([j+1,i]);
+      animation.push([j+1,i]);
+      animation.push([j+1,key]);
+      mainarray[j+1] =key;
   }
 }
